@@ -4,7 +4,7 @@ DMTN-002 SuperTask and Activator Notes
 
 Notes on how to get started with SuperTask, Activator and Workflows 
 
-View this technote at http://dmtn-2.lsst.io
+View this technote at http://dmtn-002.lsst.io
 
 
 
@@ -36,7 +36,7 @@ A good primer on reStructuredText is available at http://docs.lsst.codes/en/late
 Remember that images and other types of assets should be stored in the ``_static/`` directory of this repository.
 See ``_static/README.rst`` for more information.
 
-The published technote at http://dmtn-2.lsst.io will be automatically rebuilt whenever you push your changes to the ``master`` branch on `GitHub <https://github.com/lsst-dm/dmtn-002>`_.
+The published technote at http://dmtn-002.lsst.io will be automatically rebuilt whenever you push your changes to the ``master`` branch on `GitHub <https://github.com/lsst-dm/dmtn-002>`_.
 
 Updating metadata
 =================
