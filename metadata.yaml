@@ -6,18 +6,18 @@
 series: 'DMTN'
 
 # Document number, as a string. It should be three digits, padded with leading zeros
-serial_number: '2'
+serial_number: '002'
 
 # Serial number of the document. E.g. SQR-001
 # NOTE: this field is *planned* for deprecation
-doc_id: 'DMTN-2'
+doc_id: 'DMTN-002'
 
 # Title of the document, without the series/serial designation
 doc_title: 'SuperTask and Activator Notes'
 
 # Author names, ordered as a list. Each author name should be formatted as 'First Last'
 authors:
-    - 'Matias Carrasco-Kind'
+    - 'Matias Carrasco Kind'
 
 # Current document version
 last_revised: '2015-11-25'
