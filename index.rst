@@ -37,6 +37,15 @@
 
    Feel free to delete this instructional comment.
 
-:tocdepth: 1
 
-Write the docs; right here.
+.. include:: colors.rst
+
+.. topic:: Note
+
+    These notes will be constantly modified are do not represent an official release of the SuperTask and pipe_base re-design. These are intended for people to get familiar with the current work and to have some sort of updated documentation for future uses as well.
+
+
+Getting Started
+===============
+
+
