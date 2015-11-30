@@ -173,10 +173,213 @@ and the output is:
     lsst.pipe.base.examples.test2task.Test2Task
 
 
-Writing (Super)Tasks in new format
----------------------------------- 
+All these tasks can be called as shown before,  for example the task **ExampleMeanTask** only computes the Mean of an image (for the sake of the examples), the code  (shortened) is shown below:
+
+.. code-block:: py
+
+    from __future__ import absolute_import, division, print_function
+    import lsst.pex.config as pexConfig
+    from lsst.afw.image import MaskU
+    import lsst.afw.math as afwMath
+    import lsst.pex.config as pexConfig
+    import lsst.pipe.base as pipeBase
+    import lsst.pipe.base.super_task as super_task
+    from lsst.pipe.base.super_task import SuperTask
+
+    class ExampleMeanConfig(pexConfig.Config):
+        """!Configuration for ExampleSigmaClippedStatsTask
+        """
+        badMaskPlanes = pexConfig.ListField(
+            dtype = str,
+            doc = "Mask planes that, if set, the associated pixel should not be included in the coaddTempExp.",
+            default = ("EDGE",),
+        )
+        numSigmaClip = pexConfig.Field(
+            doc = "number of sigmas at which to clip data",
+            dtype = float,
+            default = 3.0,
+        )
+        numIter = pexConfig.Field(
+            doc = "number of iterations of sigma clipping",
+            dtype = int,
+            default = 2,
+        )
 
 
+    @super_task.wrapclass(super_task.wraprun)
+    class ExampleMeanTask(SuperTask):
+
+        ConfigClass = ExampleMeanConfig
+        _default_name = "exampleMean"
+
+        def __init__(self, *args, **kwargs):
+
+            super(ExampleMeanTask, self).__init__(*args, **kwargs)
+            #basetask.Task.__init__(self, *args, **kwargs)
+
+        def pre_run(self):
+            self._badPixelMask = MaskU.getPlaneBitMask(self.config.badMaskPlanes)
+            self._statsControl = afwMath.StatisticsControl()
+            self._statsControl.setNumSigmaClip(self.config.numSigmaClip)
+            self._statsControl.setNumIter(self.config.numIter)
+            self._statsControl.setAndMask(self._badPixelMask)
+
+
+        @pipeBase.timeMethod
+        def execute(self, dataRef):
+
+            calExp = dataRef.get("raw")
+            maskedImage = calExp.getMaskedImage()
+            return self.run(maskedImage)
+
+        def run(self, maskedImage):
+
+            statObj = afwMath.makeStatistics(maskedImage, afwMath.MEANCLIP | afwMath.STDEVCLIP | afwMath.ERRORS,
+                self._statsControl)
+            mean, meanErr = statObj.getResult(afwMath.MEANCLIP)
+            self.log.info("clipped mean=%0.2f; meanErr=%0.2f" % (mean, meanErr))
+
+            self.output= pipeBase.Struct(
+                mean = mean,
+                meanErr = meanErr,
+            )
+            return self.output
+
+
+And you can run this (Super)Task with (only one visit in filter r):
+
+.. prompt:: bash
+
+    cmdLineActivator exampleMeanTask --extras $OBS_TEST_DIR/data/input/ --id --filter=r
+
+And the output is:
+
+.. code-block:: none
+
+    lsst.pipe.base.examples.ExampleStats
+
+    Classes inside module lsst.pipe.base.examples.ExampleStats :
+
+    ExampleStats.ExampleMeanConfig
+    ExampleStats.ExampleMeanTask
+    ExampleStats.ExampleStdConfig
+    ExampleStats.ExampleStdTask
+
+    exampleMean was initiated
+    : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/11.0+1/config/exampleMean.py'
+    : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/11.0+1/config/test/exampleMean.py'
+    : input=/Users/Matias/LSST_EUPS/DarwinX86/obs_test/11.0+1/data/input
+    : calib=None
+    : output=None
+    CameraMapper: Loading registry registry from /Users/Matias/LSST_EUPS/DarwinX86/obs_test/11.0+1/data/input/registry.sqlite3
+    exampleMean was initiated
+    exampleMean: clipped mean=1433.76; meanErr=0.03
+
+
+Writing (Super)Tasks in new format 
+----------------------------------
+
+To be completed...
+
+Writing WorkFlowTasks
+---------------------
+
+To be completed....
+
+
+A workflow task based on the examples computes mean, std and mean again as separate tasks
+
+.. code-block:: py
+
+    from __future__ import absolute_import, division, print_function
+    from lsst.pipe.base.workflow import WorkFlowSeqTask, WorkFlowParTask
+    from lsst.pipe.base.examples.ExampleStats import ExampleMeanTask
+    from lsst.pipe.base.examples.ExampleStats import ExampleStdTask
+    import lsst.pex.config as pexConfig
+
+
+    class AllStatConfig(pexConfig.Config):
+        """
+        Config
+        """
+        minval = pexConfig.Field(
+            dtype=int,
+            doc="Min value",
+            default=2,
+        )
+
+    class AllStatTask(WorkFlowSeqTask):
+        """
+        SuperTest
+        """
+        ConfigClass = AllStatConfig
+        _default_name = 'All_Stats'
+
+        def __init__(self, config=None, name=None, parent_task=None, log=None, activator=None):
+            super(AllStatTask, self).__init__(config, name, parent_task, log, activator)
+
+            Mean = ExampleMeanTask()
+            Mean.config.numSigmaClip = 4.0
+
+            Mean2 = ExampleMeanTask(name='mean 2nd value')
+            Mean2.config.numSigmaClip = 5.0
+
+            Std = ExampleStdTask()
+
+            self.link(Mean, Mean2, Std)
+
+To run this WorkFlow (which is a SuperTask by itself):
+
+.. prompt:: bash
+
+    cmdLineActivator allstatTask --extras $OBS_TEST_DIR/data/input/ --id filter=r
+
+And the output:
+
+.. code-block:: none
+
+    lsst.pipe.base.examples.SuperExampleStats
+
+    Classes inside module lsst.pipe.base.examples.SuperExampleStats :
+
+    SuperExampleStats.AllStatConfig
+    SuperExampleStats.AllStatTask
+
+    All_Stats was initiated
+    exampleMean was initiated
+    mean_2nd_value was initiated
+    exampleStd was initiated
+    : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/11.0+1/config/All_Stats.py'
+    : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/11.0+1/config/test/All_Stats.py'
+    : input=/Users/Matias/LSST_EUPS/DarwinX86/obs_test/11.0+1/data/input
+    : calib=None
+    : output=None
+    CameraMapper: Loading registry registry from /Users/Matias/LSST_EUPS/DarwinX86/obs_test/11.0+1/data/input/registry.sqlite3
+
+    * Workflow Tree * :
+
+     All_Stats
+    |    +--> exampleMean
+    |    +--> mean_2nd_value
+    |    +--> exampleStd
+
+    All_Stats was initiated
+    exampleMean was initiated
+    mean_2nd_value was initiated
+    exampleStd was initiated
+    I am running All_Stats Using cmdLine activator
+    All_Stats: Processing data ID {'filter': 'r', 'visit': 3}
+    exampleMean: clipped mean=1433.89; meanErr=0.03
+    mean 2nd value: clipped mean=1433.99; meanErr=0.03
+    exampleStd: stdDev=37.36; stdDevErr=0.93
+
+which produce the following dot file (after rendered):
+
+.. figure:: /_static/figures/All_Stats.png
+ :name: AllStatTask
+ :alt: WorkFlow for AllStatTask
+
+ : Rendering version of the dot file generated in the process
 
 
 .. _pipe_base-x: https://github.com/lsst-dm/pipe_base-x/tree/u/mgckind/prototype
