@@ -128,7 +128,7 @@ And the output is:
     exampleTask: Processing data ID {'filter': 'r', 'visit': 3}
     exampleTask.stats: clipped mean=1433.76; meanErr=0.03; stdDev=37.36; stdDevErr=0.93
 
-The outputs are almost the same but few extra printouts. The difference in running the task is that we call **cmdLineActivator** to run the given Task  (which is now a SuperTask) and separate the arguments with :green:`--extras`
+The outputs are almost the same but few extra printouts. The difference in running the task is that we call **cmdLineActivator** to run the given Task  (which is now a SuperTask) and separate the arguments from the cmdLineActivator and the task with :blueit:`--extras` 
 
 The difference between both exampleCmdLineTasks (to be backwards compatible) is:
 
