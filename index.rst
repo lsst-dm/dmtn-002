@@ -59,12 +59,12 @@ CmdLineActivator
 Setting up environment
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Need to clone from pipe_base-x_
+Need to clone from pipe_base-x_ , branch tickets/DM-3756
 
 .. prompt:: bash
 
     setup -v pipe_tasks 11.0+1
-    git clone -b u/mgckind/prototype https://github.com/lsst-dm/pipe_base-x.git
+    git clone -b tickets/DM-3756 https://github.com/lsst-dm/pipe_base-x.git
     setup -v -r pipe_base-x/.
 
 
@@ -382,5 +382,5 @@ which produce the following dot file (after rendered):
  : Rendering version of the dot file generated in the process
 
 
-.. _pipe_base-x: https://github.com/lsst-dm/pipe_base-x/tree/u/mgckind/prototype
+.. _pipe_base-x: https://github.com/lsst-dm/pipe_base-x/tree/tickets/DM-3756
 .. _exampleCmdLineTask: https://github.com/lsst/pipe_tasks/blob/master/python/lsst/pipe/tasks/exampleCmdLineTask.py
