@@ -63,9 +63,9 @@ Need to clone from pipe_base-x_ , branch tickets/DM-3756
 
 .. prompt:: bash
 
-    setup -v pipe_tasks 11.0+1
-    git clone -b tickets/DM-3756 https://github.com/lsst-dm/pipe_base-x.git
-    setup -v -r pipe_base-x/.
+    setup -v pipe_tasks -t v11_0
+    git clone -b tickets/DM-4509 https://github.com/lsst-dm/pipe_base-x.git
+    setup -v -r pipe_base-x/. -t v11_0
 
 
 Running ExampleCmdLineTask
