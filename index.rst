@@ -68,7 +68,7 @@ Need to clone from pipe_base-x_ , branch tickets/DM-4509
     setup -v -r pipe_base-x/. -t b1817
     scons -C pipe_base-x/
 
-    Now cmdLineActivator is in your `$PATH`
+    Now cmdLineActivator is in your $PATH
 
 Running ExampleCmdLineTask
 --------------------------
