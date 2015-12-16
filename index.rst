@@ -106,30 +106,29 @@ And the output is:
 
 .. code-block:: none
 
-lsst.pipe.base.examples.NewExampleCmdLineTask found!
+    lsst.pipe.base.examples.NewExampleCmdLineTask found!
 
-Classes inside module lsst.pipe.base.examples.NewExampleCmdLineTask :
+    Classes inside module lsst.pipe.base.examples.NewExampleCmdLineTask :
 
-NewExampleCmdLineTask.NewExampleCmdLineConfig
-NewExampleCmdLineTask.NewExampleCmdLineTask
+    NewExampleCmdLineTask.NewExampleCmdLineConfig
+    NewExampleCmdLineTask.NewExampleCmdLineTask
 
-exampleTask: exampleTask was initiated
-: Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/config/exampleTask.py'
-: Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/config/test/exampleTask.py'
-: input=/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/data/input
-: calib=None
-: output=None
-CameraMapper: Loading registry registry from /Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/data/input/registry.sqlite3
-exampleTask: exampleTask was initiated
-exampleTask: Processing data ID {'filter': 'g', 'visit': 1}
-exampleTask.stats: clipped mean=1184.70; meanErr=0.02; stdDev=33.64; stdDevErr=1.04
-exampleTask: exampleTask was initiated
-exampleTask: Processing data ID {'filter': 'g', 'visit': 2}
-exampleTask.stats: clipped mean=1228.79; meanErr=0.02; stdDev=34.19; stdDevErr=nan
-exampleTask: exampleTask was initiated
-exampleTask: Processing data ID {'filter': 'r', 'visit': 3}
-exampleTask.stats: clipped mean=1433.76; meanErr=0.03; stdDev=37.36; stdDevErr=0.93
-
+    exampleTask: exampleTask was initiated
+    : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/config/exampleTask.py'
+    : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/config/test/exampleTask.py'
+    : input=/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/data/input
+    : calib=None
+    : output=None
+    CameraMapper: Loading registry registry from /Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/data/input/registry.sqlite3
+    exampleTask: exampleTask was initiated
+    exampleTask: Processing data ID {'filter': 'g', 'visit': 1}
+    exampleTask.stats: clipped mean=1184.70; meanErr=0.02; stdDev=33.64; stdDevErr=1.04
+    exampleTask: exampleTask was initiated
+    exampleTask: Processing data ID {'filter': 'g', 'visit': 2}
+    exampleTask.stats: clipped mean=1228.79; meanErr=0.02; stdDev=34.19; stdDevErr=nan
+    exampleTask: exampleTask was initiated
+    exampleTask: Processing data ID {'filter': 'r', 'visit': 3}
+    exampleTask.stats: clipped mean=1433.76; meanErr=0.03; stdDev=37.36; stdDevErr=0.93
 
 The outputs are almost the same but for few extra printouts. The difference in running the task is that we call **cmdLineActivator** to run the given Task  (which is now a SuperTask) and separate the arguments from the cmdLineActivator and the task with :blueit:`--extras` 
 
