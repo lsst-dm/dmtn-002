@@ -64,9 +64,9 @@ Need to clone from pipe_base-x_ , branch tickets/DM-4509
 .. prompt:: bash
 
     setup -v pipe_tasks -t b1817
-    git clone -b tickets/DM-4509 https://github.com/lsst-dm/pipe_base-x.git
-    setup -v -r pipe_base-x/. -t b1817
-    scons -C pipe_base-x/
+    git clone -b supertask https://github.com/lsst/pipe_base.git --single-branch
+    setup -v -r pipe_base/. -t b1817
+    scons -C pipe_base/
 
 
 Now cmdLineActivator is in your $PATH
@@ -103,17 +103,20 @@ In the new *framework* using SuperTask and CmdLineActivator, we can run the same
 
     cmdLineActivator NewExampleCmdLineTask --extras $OBS_TEST_DIR/data/input/ --id
 
+Note that for now these example task are located in  lsst.pipe.base.examples and are discovered by the activator, the name
+of the task is case insentitive
+
 And the output is:
 
 .. code-block:: none
 
-    lsst.pipe.base.examples.NewExampleCmdLineTask found!
-
+    lsst.pipe.base.examples.NewExampleCmdLineTask.NewExampleCmdLineTask found!
+    
     Classes inside module lsst.pipe.base.examples.NewExampleCmdLineTask :
-
+    
     NewExampleCmdLineTask.NewExampleCmdLineConfig
     NewExampleCmdLineTask.NewExampleCmdLineTask
-
+    
     exampleTask: exampleTask was initiated
     : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/config/exampleTask.py'
     : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/config/test/exampleTask.py'
@@ -309,7 +312,7 @@ And the output is:
 
 .. code-block:: none
 
-    lsst.pipe.base.examples.ExampleStats found!
+    lsst.pipe.base.examples.ExampleStats.ExampleMeanTask found!
 
     Classes inside module lsst.pipe.base.examples.ExampleStats :
 
@@ -338,7 +341,7 @@ To be completed...
 Writing WorkFlowTasks
 ---------------------
 
-We have separated repositories, so the example blow is only illustrative, I will fix this soon
+We have separated repositories, so the example below is only illustrative, :red:`I will fix this soon`
 
 
 A workflow task based on the examples computes mean, std and mean again as separate tasks
