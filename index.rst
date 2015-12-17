@@ -59,7 +59,7 @@ CmdLineActivator
 Setting up environment
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Need to clone from pipe_base-x_ , branch tickets/DM-4509
+Need to clone from pipe_base_ , branch supertask
 
 .. prompt:: bash
 
@@ -439,5 +439,5 @@ which produce the following dot file (after rendered):
  : Rendering version of the dot file generated in the process
 
 
-.. _pipe_base-x: https://github.com/lsst-dm/pipe_base-x/tree/tickets/DM-4509
+.. _pipe_base: https://github.com/lsst/pipe_base/tree/supertask
 .. _exampleCmdLineTask: https://github.com/lsst/pipe_tasks/blob/master/python/lsst/pipe/tasks/exampleCmdLineTask.py
