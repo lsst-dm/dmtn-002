@@ -74,7 +74,7 @@ Now cmdLineActivator is in your $PATH
 Running ExampleCmdLineTask
 --------------------------
 
-The exampleCmdLineTask_ computed the mean and the std of a raw image. The command line executable is not in the ``bin\`` folder. To run the example (Using the stack, which calls the method ``parseandRun()``) do:
+The exampleCmdLineTask_ computed the mean and the std of a raw image. The command line executable is not in the ``bin/`` folder. To run the example (Using the stack, which calls the method ``parseandRun()``) do:
 
 .. prompt:: bash
 
@@ -97,6 +97,30 @@ And the output is:
     exampleTask: Processing data ID {'filter': 'r', 'visit': 3}
     exampleTask.stats: clipped mean=1433.76; meanErr=0.03; stdDev=37.36; stdDevErr=0.93
 
+
+Running CmdLineTask with Activator
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is also possible to run CmdLineTasks using the activator directly, for example the previous run would have been:
+
+.. prompt:: bash
+
+    cmdLineActivator exampleCmdLineTask --extras $OBS_TEST_DIR/data/input/ --id
+
+or for example, a processCcdTask with:
+
+.. prompt:: bash
+
+    cmdLineActivator processccdtask --extras $OBS_TEST_DIR/data/input/ --id filter=g
+
+instead of
+
+.. prompt:: bash
+
+    processCcd.py $OBS_TEST_DIR/data/input/ --id filter=g
+
+which are equivalent.
+
 In the new *framework* using SuperTask and CmdLineActivator, we can run the same example by calling:
 
 .. prompt:: bash
@@ -104,7 +128,7 @@ In the new *framework* using SuperTask and CmdLineActivator, we can run the same
     cmdLineActivator NewExampleCmdLineTask --extras $OBS_TEST_DIR/data/input/ --id
 
 Note that for now these example task are located in  lsst.pipe.base.examples and are discovered by the activator, the name
-of the task is case insentitive
+of the task is case insensitive
 
 And the output is:
 
@@ -341,15 +365,33 @@ To be completed...
 Writing WorkFlowTasks
 ---------------------
 
-We have separated repositories, so the example below is only illustrative, :red:`I will fix this soon`
+This is still in early development but the code is in the pipe_flow_ repository in lsst-dm_
 
+There is one requirement which is not part of the stack, NetworkX_ which can be installed with `conda`
+
+
+Setting up environment for WorkFlowTasks
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Need to clone from pipe_flow_ 
+
+.. prompt:: bash
+
+    git clone https://github.com/lsst-dm/pipe_flow_x.git
+    setup -v -r pipe_flow_x/. -t b1817
+    scons -C pipe_flow_x/
+    setup -v -r pipe_base/. -t b1817
+
+The last step is to assure we setup the branch of pipe_base that includes the activator, I intentionally avoid declarations as
+this is just to run the examples, but these repositories can be declared and tagged in a more convenient way
+    
 
 A workflow task based on the examples computes mean, std and mean again as separate tasks
 
 .. code-block:: py
 
     from __future__ import absolute_import, division, print_function
-    from lsst.pipe.base.workflow import WorkFlowSeqTask, WorkFlowParTask
+    from lsst.pipe.flow.workflow import WorkFlowSeqTask, WorkFlowParTask
     from lsst.pipe.base.examples.ExampleStats import ExampleMeanTask
     from lsst.pipe.base.examples.ExampleStats import ExampleStdTask
     import lsst.pex.config as pexConfig
@@ -389,19 +431,24 @@ To run this WorkFlow (which is a SuperTask by itself):
 
 .. prompt:: bash
 
-    cmdLineActivator allstatTask --extras $OBS_TEST_DIR/data/input/ --id filter=r
+    cmdLineActivator allstatTask --packages lsst.pipe.flow.examples --extras $OBS_TEST_DIR/data/input/ --id filter=r
+
+
+Note that we have added a package with the --packages option as the activator won't look at this example folder by default, with that option we
+can add other packages for tasks and it will override the default places to discover (Super)Tasks
 
 And the output:
 
 .. code-block:: none
 
-    lsst.pipe.base.examples.SuperExampleStats
+    lsst.pipe.base.examples.SuperExampleStats.AllStatTask found!
 
     Classes inside module lsst.pipe.base.examples.SuperExampleStats :
 
     SuperExampleStats.AllStatConfig
     SuperExampleStats.AllStatTask
 
+    SuperTask
     All_Stats was initiated
     exampleMean was initiated
     mean_2nd_value was initiated
@@ -440,4 +487,7 @@ which produce the following dot file (after rendered):
 
 
 .. _pipe_base: https://github.com/lsst/pipe_base/tree/supertask
+.. _pipe_flow: https://github.com/lsst-dm/pipe_flow_x
+.. _lsst-dm: https://github.com/lsst-dm
 .. _exampleCmdLineTask: https://github.com/lsst/pipe_tasks/blob/master/python/lsst/pipe/tasks/exampleCmdLineTask.py
+.. _NetworkX: https://networkx.github.io/
