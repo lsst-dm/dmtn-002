@@ -48,7 +48,7 @@
 Getting Started
 ===============
 
-These instructions and notes are for the stack tag version b1817
+These instructions and notes are for the stack tag version b1817, although it should work with current tags as well. 
 
 
 CmdLineActivator
@@ -59,14 +59,15 @@ CmdLineActivator
 Setting up environment
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Need to clone from pipe_base_ , branch supertask
+The branch supertask in pipe_base_ was moved out to a different package which depends on pipe_base_, this new package is pipe_supertask_ for now. This location might be subject to change in the future.
+You need to clone the latest version
 
 .. prompt:: bash
 
     setup -v pipe_tasks -t b1817
-    git clone -b supertask https://github.com/lsst/pipe_base.git --single-branch
-    setup -v -r pipe_base/. -t b1817
-    scons -C pipe_base/
+    git clone https://github.com/lsst/pipe_supertask.git
+    setup -v -r pipe_supertask/. -t b1817
+    scons -C pipe_supertask/
 
 
 Now cmdLineActivator is in your $PATH
@@ -78,7 +79,7 @@ The exampleCmdLineTask_ computed the mean and the std of a raw image. The comman
 
 .. prompt:: bash
 
-    python $PIPE_TASKS_DIR/examples/exampleCmdLineTask.py $OBS_TEST_DIR/data/input/ --id
+    python $PIPE_TASKS_DIR/examples/exampleCmdLineTask.py $OBS_TEST_DIR/data/input/ --id --output test
 
 And the output is:
 
@@ -105,19 +106,19 @@ It is also possible to run CmdLineTasks using the activator directly, for exampl
 
 .. prompt:: bash
 
-    cmdLineActivator exampleCmdLineTask --extras $OBS_TEST_DIR/data/input/ --id
+    cmdLineActivator exampleCmdLineTask --extras $OBS_TEST_DIR/data/input/ --id --output test
 
 or for example, a processCcdTask with:
 
 .. prompt:: bash
 
-    cmdLineActivator processccdtask --extras $OBS_TEST_DIR/data/input/ --id filter=g
+    cmdLineActivator processccdtask --extras $OBS_TEST_DIR/data/input/ --id filter=g --output test
 
 instead of
 
 .. prompt:: bash
 
-    processCcd.py $OBS_TEST_DIR/data/input/ --id filter=g
+    processCcd.py $OBS_TEST_DIR/data/input/ --id filter=g --output test
 
 which are equivalent.
 
@@ -127,16 +128,16 @@ In the new *framework* using SuperTask and CmdLineActivator, we can run the same
 
     cmdLineActivator NewExampleCmdLineTask --extras $OBS_TEST_DIR/data/input/ --id
 
-Note that for now these example task are located in  lsst.pipe.base.examples and are discovered by the activator, the name
+Note that for now these example task are located in  lsst.pipe.supertask.examples and are discovered by the activator, the name
 of the task is case insensitive
 
 And the output is:
 
 .. code-block:: none
 
-    lsst.pipe.base.examples.NewExampleCmdLineTask.NewExampleCmdLineTask found!
+    lsst.pipe.supertask.examples.NewExampleCmdLineTask.NewExampleCmdLineTask found!
     
-    Classes inside module lsst.pipe.base.examples.NewExampleCmdLineTask :
+    Classes inside module lsst.pipe.supertask.examples.NewExampleCmdLineTask :
     
     NewExampleCmdLineTask.NewExampleCmdLineConfig
     NewExampleCmdLineTask.NewExampleCmdLineTask
@@ -158,14 +159,14 @@ And the output is:
     exampleTask: Processing data ID {'filter': 'r', 'visit': 3}
     exampleTask.stats: clipped mean=1433.76; meanErr=0.03; stdDev=37.36; stdDevErr=0.93
 
-The outputs are almost the same but for few extra printouts. The difference in running the task is that we call **cmdLineActivator** to run the given Task  (which is now a SuperTask) and separate the arguments from the cmdLineActivator and the task with :blueit:`--extras` 
+The outputs are almost the same but for few extra printouts. The difference in running the task is that we call **cmdLineActivator** to run the given Task  (which is now a SuperTask) and separate the arguments from the cmdLineActivator and the task with --extras 
 
 The main difference between both exampleCmdLineTasks (to be backwards compatible) are:
 
 .. code-block:: diff
 
     --- a/Users/Matias/LSST_EUPS/DarwinX86/pipe_tasks/2015_10.0-12-g9f70a69+11/python/lsst/pipe/tasks/exampleCmdLineTask
-    +++ b/Users/Matias/Dropbox/LSST_DM/Task_Redesign/pipe_base-x/python/lsst/pipe/base/examples/NewExampleCmdLineTask.py
+    +++ b/Users/Matias/Dropbox/LSST_DM/Task_Redesign/pipe_supertask/python/lsst/pipe/supertask/examples/NewExampleCmdLineTask.py
     @@ -26 +26 @@ import lsst.pipe.base as pipeBase
     -from .exampleStatsTasks import ExampleSigmaClippedStatsTask
     +from lsst.pipe.tasks.exampleStatsTasks import ExampleSigmaClippedStatsTask
@@ -188,7 +189,7 @@ The main difference between both exampleCmdLineTasks (to be backwards compatible
 
 So basically CmdLineTask --> SuperTask and run --> execute (more to come on this...)
 
-To list the available tasks seen by CmdLineActivator (which for now only looks in lsst.pipe.base.examples and lsst.pipe.tasks):
+To list the available tasks seen by CmdLineActivator (which for now only looks in lsst.pipe.supertask.examples and lsst.pipe.tasks):
 
 .. prompt:: bash
 
@@ -246,14 +247,14 @@ and the output is:
     lsst.pipe.tasks.transformMeasurement.CoaddSrcTransformTask
     lsst.pipe.tasks.transformMeasurement.TransformTask
     lsst.pipe.tasks.warpAndPsfMatch.WarpAndPsfMatchTask
-    lsst.pipe.base.examples.ExampleStats.ExampleMeanTask
-    lsst.pipe.base.examples.ExampleStats.ExampleStdTask
-    lsst.pipe.base.examples.NewExampleCmdLineTask.NewExampleCmdLineTask
-    lsst.pipe.base.examples.test1task.Test1Task
-    lsst.pipe.base.examples.test2task.Test2Task
+    lsst.pipe.supertask.examples.ExampleStats.ExampleMeanTask
+    lsst.pipe.supertask.examples.ExampleStats.ExampleStdTask
+    lsst.pipe.supertask.examples.NewExampleCmdLineTask.NewExampleCmdLineTask
+    lsst.pipe.supertask.examples.test1task.Test1Task
+    lsst.pipe.supertask.examples.test2task.Test2Task
 
 
-All these tasks in `lsst.pipe.base.examples` can be called as shown before,  for example the task **ExampleMeanTask** only computes the Mean of an image (for the sake of the example), the code  (shortened) is shown below:
+All these tasks in `lsst.pipe.supertask.examples` can be called as shown before,  for example the task **ExampleMeanTask** only computes the Mean of an image (for the sake of the example), the code  (shortened) is shown below:
 
 .. code-block:: py
 
@@ -263,8 +264,8 @@ All these tasks in `lsst.pipe.base.examples` can be called as shown before,  for
     import lsst.afw.math as afwMath
     import lsst.pex.config as pexConfig
     import lsst.pipe.base as pipeBase
-    import lsst.pipe.base.super_task as super_task
-    from lsst.pipe.base.super_task import SuperTask
+    import lsst.pipe.supertask.super_task as super_task
+    from lsst.pipe.supertask.super_task import SuperTask
 
     class ExampleMeanConfig(pexConfig.Config):
         """!Configuration for ExampleSigmaClippedStatsTask
@@ -336,9 +337,9 @@ And the output is:
 
 .. code-block:: none
 
-    lsst.pipe.base.examples.ExampleStats.ExampleMeanTask found!
+    lsst.pipe.supertask.examples.ExampleStats.ExampleMeanTask found!
 
-    Classes inside module lsst.pipe.base.examples.ExampleStats :
+    Classes inside module lsst.pipe.supertask.examples.ExampleStats :
 
     ExampleStats.ExampleMeanConfig
     ExampleStats.ExampleMeanTask
@@ -487,6 +488,7 @@ which produce the following dot file (after rendered):
 
 
 .. _pipe_base: https://github.com/lsst/pipe_base/tree/supertask
+.. _pipe_supertask: https://github.com/lsst/pipe_supertask
 .. _pipe_flow: https://github.com/lsst-dm/pipe_flow_x
 .. _lsst-dm: https://github.com/lsst-dm
 .. _exampleCmdLineTask: https://github.com/lsst/pipe_tasks/blob/master/python/lsst/pipe/tasks/exampleCmdLineTask.py

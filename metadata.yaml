@@ -20,18 +20,18 @@ authors:
     - 'Matias Carrasco Kind'
 
 # Current document version
-last_revised: '2015-12-18'
+last_revised: '2016-03-07'
 
 # Version. Use Semvar, e.g., 1.0, including .dev, as necessary
 # This version string should correspond to the git tag when the document is published on Zenodo
-version: '1.0.3'
+version: '1.0.4'
 
 # Digital Object Identifier (DOI). Uncomment if available.
 # Keep this DOI updated as new releases are pushed to Zenodo
 # doi: 10.5281/zenodo.#####
 
 # Copyright statement
-copyright: '2015, AURA/LSST'
+copyright: '2016, AURA/LSST'
 
 # Description. A short, 1-2 sentence statemement used by document indices.
 description: 'Notes on how to get started with SuperTask, Activator and Workflows '
