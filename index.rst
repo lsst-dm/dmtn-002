@@ -309,8 +309,8 @@ All these tasks in `lsst.pipe.supertask.examples` can be called as shown before,
         @pipeBase.timeMethod
         def execute(self, dataRef):
 
-            calExp = dataRef.get("raw")
-            maskedImage = calExp.getMaskedImage()
+            rawExp = dataRef.get("raw")
+            maskedImage = rawExp.getMaskedImage()
             return self.run(maskedImage)
 
         def run(self, maskedImage):
