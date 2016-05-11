@@ -126,7 +126,7 @@ In the new *framework* using SuperTask and CmdLineActivator, we can run the same
 
 .. prompt:: bash
 
-    cmdLineActivator NewExampleCmdLineTask --extras $OBS_TEST_DIR/data/input/ --id
+    cmdLineActivator NewExampleCmdLineTask --extras $OBS_TEST_DIR/data/input/ --output test --id
 
 Note that for now these example task are located in  lsst.pipe.supertask.examples and are discovered by the activator, the name
 of the task is case insensitive
@@ -309,8 +309,8 @@ All these tasks in `lsst.pipe.supertask.examples` can be called as shown before,
         @pipeBase.timeMethod
         def execute(self, dataRef):
 
-            calExp = dataRef.get("raw")
-            maskedImage = calExp.getMaskedImage()
+            rawExp = dataRef.get("raw")
+            maskedImage = rawExp.getMaskedImage()
             return self.run(maskedImage)
 
         def run(self, maskedImage):
