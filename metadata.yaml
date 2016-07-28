@@ -20,11 +20,11 @@ authors:
     - 'Matias Carrasco Kind'
 
 # Current document version
-last_revised: '2016-03-07'
+last_revised: '2016-07-18'
 
 # Version. Use Semvar, e.g., 1.0, including .dev, as necessary
 # This version string should correspond to the git tag when the document is published on Zenodo
-version: '1.0.4'
+version: '1.0.5'
 
 # Digital Object Identifier (DOI). Uncomment if available.
 # Keep this DOI updated as new releases are pushed to Zenodo
