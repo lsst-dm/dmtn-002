@@ -48,7 +48,7 @@
 Getting Started
 ===============
 
-These instructions and notes are for the stack tag version b1817, although it should work with current tags as well. 
+These instructions and notes are for the stack tag version b2079 (v 12.0)  although it should work with current tags as well. 
 
 
 CmdLineActivator
@@ -64,9 +64,9 @@ You need to clone the latest version
 
 .. prompt:: bash
 
-    setup -v pipe_tasks -t b1817
+    setup -v pipe_tasks 
     git clone https://github.com/lsst/pipe_supertask.git
-    setup -v -r pipe_supertask/. -t b1817
+    setup -v -r pipe_supertask/. 
     scons -C pipe_supertask/
 
 
@@ -85,12 +85,12 @@ And the output is:
 
 .. code-block:: none
 
-    : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/config/exampleTask.py'
-    : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/config/test/exampleTask.py'
-    : input=/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/data/input
+    : Config override file does not exist: '/Users/Matias/lsstsw/stack/DarwinX86/obs_test/12.0-5-gcdb69c4/config/exampleTask.py'
+    : Config override file does not exist: '/Users/Matias/lsstsw/stack/DarwinX86/obs_test/12.0-5-gcdb69c4/config/test/exampleTask.py'
+    : input=/Users/Matias/lsstsw/stack/DarwinX86/obs_test/12.0-5-gcdb69c4/data/input
     : calib=None
-    : output=None
-    CameraMapper: Loading registry registry from /Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/data/input/registry.sqlite3
+    : output=/Users/Matias/Dropbox/LSST_DM/Task_Redesign/pipe_supertask/test
+    CameraMapper: Loading registry registry from /Users/Matias/Dropbox/LSST_DM/Task_Redesign/pipe_supertask/test/_parent/registry.sqlite3
     exampleTask: Processing data ID {'filter': 'g', 'visit': 1}
     exampleTask.stats: clipped mean=1184.70; meanErr=0.02; stdDev=33.64; stdDevErr=1.04
     exampleTask: Processing data ID {'filter': 'g', 'visit': 2}
@@ -107,6 +107,33 @@ It is also possible to run CmdLineTasks using the activator directly, for exampl
 .. prompt:: bash
 
     cmdLineActivator exampleCmdLineTask --extras $OBS_TEST_DIR/data/input/ --id --output test
+
+with the following output:
+
+.. code-block:: none
+
+    lsst.pipe.tasks.exampleCmdLineTask.ExampleCmdLineTask found!
+    
+    Classes inside module lsst.pipe.tasks.exampleCmdLineTask :
+    
+    exampleCmdLineTask.ExampleCmdLineConfig
+    exampleCmdLineTask.ExampleCmdLineTask
+    
+    CmdLineTask
+    : Config override file does not exist: '/Users/Matias/lsstsw/stack/DarwinX86/obs_test/12.0-5-gcdb69c4/config/exampleTask.py'
+    : Config override file does not exist: '/Users/Matias/lsstsw/stack/DarwinX86/obs_test/12.0-5-gcdb69c4/config/test/exampleTask.py'
+    : input=/Users/Matias/lsstsw/stack/DarwinX86/obs_test/12.0-5-gcdb69c4/data/input
+    : calib=None
+    : output=/Users/Matias/Dropbox/LSST_DM/Task_Redesign/pipe_supertask/test
+    CameraMapper: Loading registry registry from /Users/Matias/Dropbox/LSST_DM/Task_Redesign/pipe_supertask/test/_parent/registry.sqlite3
+    exampleTask: Processing data ID {'filter': 'g', 'visit': 1}
+    exampleTask.stats: clipped mean=1184.70; meanErr=0.02; stdDev=33.64; stdDevErr=1.04
+    exampleTask: Processing data ID {'filter': 'g', 'visit': 2}
+    exampleTask.stats: clipped mean=1228.79; meanErr=0.02; stdDev=34.19; stdDevErr=nan
+    exampleTask: Processing data ID {'filter': 'r', 'visit': 3}
+    exampleTask.stats: clipped mean=1433.76; meanErr=0.03; stdDev=37.36; stdDevErr=0.93
+
+
 
 or for example, a processCcdTask with:
 
@@ -142,13 +169,14 @@ And the output is:
     NewExampleCmdLineTask.NewExampleCmdLineConfig
     NewExampleCmdLineTask.NewExampleCmdLineTask
     
+    SuperTask
     exampleTask: exampleTask was initiated
-    : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/config/exampleTask.py'
-    : Config override file does not exist: '/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/config/test/exampleTask.py'
-    : input=/Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/data/input
+    : Config override file does not exist: '/Users/Matias/lsstsw/stack/DarwinX86/obs_test/12.0-5-gcdb69c4/config/exampleTask.py'
+    : Config override file does not exist: '/Users/Matias/lsstsw/stack/DarwinX86/obs_test/12.0-5-gcdb69c4/config/test/exampleTask.py'
+    : input=/Users/Matias/lsstsw/stack/DarwinX86/obs_test/12.0-5-gcdb69c4/data/input
     : calib=None
-    : output=None
-    CameraMapper: Loading registry registry from /Users/Matias/LSST_EUPS/DarwinX86/obs_test/2015_10.0-1-g309867c+12/data/input/registry.sqlite3
+    : output=/Users/Matias/Dropbox/LSST_DM/Task_Redesign/pipe_supertask/test
+    CameraMapper: Loading registry registry from /Users/Matias/Dropbox/LSST_DM/Task_Redesign/pipe_supertask/test/_parent/registry.sqlite3
     exampleTask: exampleTask was initiated
     exampleTask: Processing data ID {'filter': 'g', 'visit': 1}
     exampleTask.stats: clipped mean=1184.70; meanErr=0.02; stdDev=33.64; stdDevErr=1.04
@@ -163,29 +191,42 @@ The outputs are almost the same but for few extra printouts. The difference in r
 
 The main difference between both exampleCmdLineTasks (to be backwards compatible) are:
 
+.. code-block:: none
+
+    git diff -U0 $PIPE_TASKS_DIR/python/lsst/pipe/tasks/exampleCmdLineTask.py $PIPE_SUPERTASK_DIR/python/lsst/pipe/supertask/examples/NewExampleCmdLineTask.py
+
 .. code-block:: diff
 
-    --- a/Users/Matias/LSST_EUPS/DarwinX86/pipe_tasks/2015_10.0-12-g9f70a69+11/python/lsst/pipe/tasks/exampleCmdLineTask
+    --- a/Users/Matias/lsstsw/stack/DarwinX86/pipe_tasks/12.0-19-g221e009/python/lsst/pipe/tasks/exampleCmdLineTask.py
     +++ b/Users/Matias/Dropbox/LSST_DM/Task_Redesign/pipe_supertask/python/lsst/pipe/supertask/examples/NewExampleCmdLineTask.py
-    @@ -26 +26 @@ import lsst.pipe.base as pipeBase
+    @@ -26,3 +26,2 @@ import lsst.pipe.base as pipeBase
     -from .exampleStatsTasks import ExampleSigmaClippedStatsTask
+    -
+    -__all__ = ["ExampleCmdLineConfig", "ExampleCmdLineTask"]
+    +import lsst.pipe.supertask as pipeSuper
     +from lsst.pipe.tasks.exampleStatsTasks import ExampleSigmaClippedStatsTask
-    @@ -37 +37 @@ from .exampleStatsTasks import ExampleSigmaClippedStatsTask
+    @@ -39 +38 @@ __all__ = ["ExampleCmdLineConfig", "ExampleCmdLineTask"]
     -class ExampleCmdLineConfig(pexConfig.Config):
     +class NewExampleCmdLineConfig(pexConfig.Config):
-    @@ -51 +51 @@ class ExampleCmdLineConfig(pexConfig.Config):
+    @@ -53 +52 @@ class ExampleCmdLineConfig(pexConfig.Config):
     -class ExampleCmdLineTask(pipeBase.CmdLineTask):
-    +class NewExampleCmdLineTask(pipeBase.SuperTask):
-    @@ -101 +101 @@ class ExampleCmdLineTask(pipeBase.CmdLineTask):
+    +class NewExampleCmdLineTask(pipeSuper.SuperTask):
+    @@ -69 +68 @@ class ExampleCmdLineTask(pipeBase.CmdLineTask):
+    -    The task reads in a "calexp" (a calibrated science \ref lsst::afw::image::Exposure "exposure"),
+    +    The task reads in a "raw" exposure (\ref lsst::afw::image::Exposure),
+    @@ -103 +102 @@ class ExampleCmdLineTask(pipeBase.CmdLineTask):
     -    ConfigClass = ExampleCmdLineConfig
     +    ConfigClass = NewExampleCmdLineConfig
-    @@ -109 +109,2 @@ class ExampleCmdLineTask(pipeBase.CmdLineTask):
+    @@ -111 +110,2 @@ class ExampleCmdLineTask(pipeBase.CmdLineTask):
     -        pipeBase.CmdLineTask.__init__(self, *args, **kwargs)
     +        super(NewExampleCmdLineTask, self).__init__(*args, **kwargs)
     +
-    @@ -113 +114 @@ class ExampleCmdLineTask(pipeBase.CmdLineTask):
+    @@ -115 +115 @@ class ExampleCmdLineTask(pipeBase.CmdLineTask):
     -    def run(self, dataRef):
     +    def execute(self, dataRef):
+    @@ -118 +118 @@ class ExampleCmdLineTask(pipeBase.CmdLineTask):
+    -        @param dataRef: data reference for a calibrated science exposure ("calexp")
+    +        @param dataRef: a daf.persistence.butlerSubset.ButlerDataRef reference to datasets
 
 So basically CmdLineTask --> SuperTask and run --> execute (more to come on this...)
 
