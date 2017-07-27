@@ -1,8 +1,20 @@
 sudo: false
 language: python
-python:
-      - 3.4
-install: "pip install -r requirements.txt"
-script: "make html"
-notifications:
-      email: false
+matrix:
+  include:
+    - python: "3.5"
+      env: LTD_MASON_BUILD=true
+install:
+  - pip install -r requirements.txt
+  - pip install "ltd-mason>=0.2,<0.3"
+script:
+  - sphinx-build -b html -a -n -d _build/doctree . _build/html
+after_success:
+  - ltd-mason-travis --html-dir _build/html
+env:
+  global:
+    - LTD_MASON_BUILD=false  # disable builds in regular text matrix
+    - LTD_MASON_PRODUCT="dmtn-002"
+    # Add AWS and LTD Keeper credentials as encrypted secrets here
+    - secure: "JySlSzUoQ55jMEhuzHDOy0nIS14sGLW6uSuInDw7GSBc78zz32XMP1tl9+RTwa59D0WX9JxIoBIO/dgnQYE/X6CFJ7vN1MODfuTKZkQnFG/4BvOedt0ETB8IjyDeMwqqa50hPzhyESta7AFmWRt1V+jRWhK5OcfImrjdBCv6ecownwTSRXJ4R3TH58TnWLfknzzgcRpR6Ihnie2uY3nsbOSVJ9OXI/bN9u+K8gCSmxsnoYFIdy8s6/biByPnbZYeJIBAehLus49Uw4F1yfeKMrVAywpQts8dymuBE3k1wj8Jb65d+JyKtMbfn5d8NIo0AtC0yZ2eNhlCwk5g7L1FEf1kttKDbGqbxqEum1ZFpf8tIJwpeAaWMRM06XUztcKzsjWCHz8jgZ5nxQKY3j2+TXEdY50uk4aWEjTjTl+vcvQC+mFJ6hCh1l74/I5ov+xJDZ6kai+0N+1repRhvzCMKowzyQqYZnBIJxD++QZqlsU2ks3RtGmVBIbqy1O74F5BA16hstI9THA7ryGd85cTSGQoFa5V3LmeXqPMcliiRi3F6sJR7r8mNCxKCLgbhO2ggOh0sWmzwFDSmtQOdZfzHLk6fhIFKwfCSfSxSNTQIZFgmZYoqZwSx3HptIqjNOi3J9YGYYOcG8E53N/RAlFvi9Nj9pFnW1qg+43sI6cUERQ="
+    - secure: "QHxgKs4yXBgMQkXdlErwqQkXTFB8PqJ/8WSrA5FEznB1j/cLXGl4CNIo9yjcFI8Aw+Q+vFeJk525wVu3Rdgiku17GyLLk071aA5URH99zulGvb4iC+ksJaG1jyzDW+UlCUX/1DybRJ4+LDALvEgm2qu7fkiRZYtTGDLevhAzMgndd1s0/lsmczG+vsaapNrYejoz3QA1aJqGss+EVj2solnQBbHpmFMCB+4cziMAF6dZgrtYg0/R7E/wJuygTiXBuhu3LYBbY2rPZ40Vus515p1513/d1GPlEN+bJSkqC7Wn2ecVLS2RgnSvDhvxrQS5WWJtjtIUgNJxU4UGev+LByOlvL1yVPGhAtTLbBNDDTjq8DrU9WzevJpFJAj1NqTPPR/arpo95QkKMDG3Wq6Xtclki0Sf2bLO3JouryVPNriV79kFGtzZ9iNpbwn0uBR6RaaV1LKfpOFx6SrmpnvwpIcUnCUWM4ARlkE9eAgOp3F+dGfJACh+Fu8T3qpDd0ERg+HzTznflR5/Te7JIJp1wWagKKAaUS/q3G9n5kAcBrjxG0P6kK2zKIjbQZA+unOoaryoSTKpFNKnLql74WycovxO5LyqdOPTMV+giza8sua/7tbRy9v9MxMDI7a/ZU29i/Oo0GHs8732YSsDqzKcyqUEcu5heYVmcq42Epdm+3o="
